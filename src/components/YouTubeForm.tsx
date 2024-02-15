@@ -35,8 +35,9 @@ export const YouTubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const { register, control, handleSubmit, formState, watch, getValues, setValue } = form;
   // getValues doesn't trigger re-renders or subscribe to input values when getting value data
+  // setValue doesn't effect touched, dirty, validate state by default
   
   const { errors } = formState;
 
@@ -53,13 +54,22 @@ export const YouTubeForm = () => {
     console.log("Get values", getValues());
   }
 
-  const watchForm = watch();
+  const handleSetValue = () => {
+    setValue("username", "foo", {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+  }
+
+  // const watchForm = watch(); adds a rerender
 
   renderCount++;
   return (
     <div>
       <h1>YouTube Form {renderCount/2}</h1>
-      <h2>Watched value: {JSON.stringify(watchForm)}</h2>
+      {/* <h2>Watched value: {JSON.stringify(watchForm)}</h2> */}
+      {/* <h2>Watched value: {JSON.stringify(getValues())}</h2> Interestingly this doesn't consistently trigger rerender */}
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="form-control">
           <label htmlFor="username">Username</label>
@@ -174,6 +184,9 @@ export const YouTubeForm = () => {
           </div>
           <button type="button" onClick={handleGetValues}>
             Get values
+          </button>
+          <button type="button" onClick={handleSetValue}>
+            Set value
           </button>
         <button>Submit</button>
       </form>
