@@ -21,9 +21,9 @@ type FormValues = {
 export const YouTubeForm = () => {
   const form = useForm<FormValues>({
     defaultValues: {
-      username: "",
-      email: "",
-      channel: "",
+      username: "test",
+      email: "test@test.com",
+      channel: "test",
       social: {
         twitter: "",
         facebook: "",
@@ -35,7 +35,7 @@ export const YouTubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
   const { errors } = formState;
 
   const { fields, append, remove } = useFieldArray({
@@ -47,10 +47,12 @@ export const YouTubeForm = () => {
     console.log("submitted", data);
   };
 
+  const watchForm = watch();
+
   return (
     <div>
       <h1>YouTube Form</h1>
-
+      <h2>Watched value: {JSON.stringify(watchForm)}</h2>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="form-control">
           <label htmlFor="username">Username</label>
