@@ -17,7 +17,7 @@ type FormValues = {
   age: number;
   dob: Date;
 };
-
+let renderCount = 0;
 export const YouTubeForm = () => {
   const form = useForm<FormValues>({
     defaultValues: {
@@ -35,7 +35,9 @@ export const YouTubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState, watch } = form;
+  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  // getValues doesn't trigger re-renders or subscribe to input values when getting value data
+  
   const { errors } = formState;
 
   const { fields, append, remove } = useFieldArray({
@@ -47,11 +49,16 @@ export const YouTubeForm = () => {
     console.log("submitted", data);
   };
 
+  const handleGetValues = () => {
+    console.log("Get values", getValues());
+  }
+
   const watchForm = watch();
 
+  renderCount++;
   return (
     <div>
-      <h1>YouTube Form</h1>
+      <h1>YouTube Form {renderCount/2}</h1>
       <h2>Watched value: {JSON.stringify(watchForm)}</h2>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="form-control">
@@ -165,6 +172,9 @@ export const YouTubeForm = () => {
             />
             <p className="error">{errors.dob?.message}</p>
           </div>
+          <button type="button" onClick={handleGetValues}>
+            Get values
+          </button>
         <button>Submit</button>
       </form>
       <DevTool control={control} />
