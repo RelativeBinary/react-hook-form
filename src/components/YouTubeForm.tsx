@@ -210,7 +210,7 @@ export const YouTubeForm = () => {
         <button type="button" onClick={handleSetValue}>
           Set value
         </button>
-        {!isDirty || isValid ? (
+        {!isDirty || !isValid ? (
           <button>Submit</button>
         ) : (
           <></>
