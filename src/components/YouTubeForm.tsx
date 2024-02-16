@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 type FormValues = {
@@ -35,14 +35,22 @@ export const YouTubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState, watch, getValues, setValue } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
   // getValues doesn't trigger re-renders or subscribe to input values when getting value data
   // setValue doesn't effect touched, dirty, validate state by default
-  
+
   const { errors, touchedFields, dirtyFields, isDirty } = formState;
   console.log("touchedFields", touchedFields);
   console.log("dirtyFields", dirtyFields); // dirty shows when something has changed from its original state
-  console.log("isDirty", isDirty)
+  console.log("isDirty", isDirty);
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
     control,
@@ -52,27 +60,31 @@ export const YouTubeForm = () => {
     console.log("submitted", data);
   };
 
+  const onError = (errors: FieldErrors<FormValues>) => {
+    console.log("errors", errors);
+  };
+
   const handleGetValues = () => {
     console.log("Get values", getValues());
-  }
+  };
 
   const handleSetValue = () => {
     setValue("username", "foo", {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
-    })
-  }
+    });
+  };
 
   // const watchForm = watch(); adds a rerender
 
   renderCount++;
   return (
     <div>
-      <h1>YouTube Form {renderCount/2}</h1>
+      <h1>YouTube Form {renderCount / 2}</h1>
       {/* <h2>Watched value: {JSON.stringify(watchForm)}</h2> */}
       {/* <h2>Watched value: {JSON.stringify(getValues())}</h2> Interestingly this doesn't consistently trigger rerender */}
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
         <div className="form-control">
           <label htmlFor="username">Username</label>
           <input
@@ -129,10 +141,15 @@ export const YouTubeForm = () => {
         </div>
         <div className="form-control">
           <label htmlFor="twitter">twitter</label>
-          <input type="text" id="channel" {...register("social.twitter", {
-            disabled: watch("channel") === "",
-            required: "Enter twitter profile", // no validation triggered when disabled
-          })} />
+          <input
+            type="text"
+            id="channel"
+            {...register("social.twitter", {
+              disabled: watch("channel") === "",
+              required: "Enter twitter profile", // no validation triggered when disabled
+            })}
+          />
+          <p className="error">{errors.social?.twitter?.message}</p>
         </div>
         <div className="form-control">
           <label htmlFor="facebook">facebook</label>
@@ -176,23 +193,23 @@ export const YouTubeForm = () => {
           </div>
         </div>
         <div className="form-control">
-            <label htmlFor="dob">dob</label>
-            <input
-              type="date"
-              id="dob"
-              {...register("dob", {
-                valueAsDate: true,
-                required: { value: true, message: "dob is required" },
-              })}
-            />
-            <p className="error">{errors.dob?.message}</p>
-          </div>
-          <button type="button" onClick={handleGetValues}>
-            Get values
-          </button>
-          <button type="button" onClick={handleSetValue}>
-            Set value
-          </button>
+          <label htmlFor="dob">dob</label>
+          <input
+            type="date"
+            id="dob"
+            {...register("dob", {
+              valueAsDate: true,
+              required: { value: true, message: "dob is required" },
+            })}
+          />
+          <p className="error">{errors.dob?.message}</p>
+        </div>
+        <button type="button" onClick={handleGetValues}>
+          Get values
+        </button>
+        <button type="button" onClick={handleSetValue}>
+          Set value
+        </button>
         <button>Submit</button>
       </form>
       <DevTool control={control} />
