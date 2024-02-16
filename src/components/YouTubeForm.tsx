@@ -129,7 +129,10 @@ export const YouTubeForm = () => {
         </div>
         <div className="form-control">
           <label htmlFor="twitter">twitter</label>
-          <input type="text" id="channel" {...register("social.twitter")} />
+          <input type="text" id="channel" {...register("social.twitter", {
+            disabled: watch("channel") === "",
+            required: "Enter twitter profile", // no validation triggered when disabled
+          })} />
         </div>
         <div className="form-control">
           <label htmlFor="facebook">facebook</label>
