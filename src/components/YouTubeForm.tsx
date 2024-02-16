@@ -47,10 +47,10 @@ export const YouTubeForm = () => {
   // getValues doesn't trigger re-renders or subscribe to input values when getting value data
   // setValue doesn't effect touched, dirty, validate state by default
 
-  const { errors, touchedFields, dirtyFields, isDirty } = formState;
-  console.log("touchedFields", touchedFields);
-  console.log("dirtyFields", dirtyFields); // dirty shows when something has changed from its original state
-  console.log("isDirty", isDirty);
+  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
+  // console.log("touchedFields", touchedFields);
+  // console.log("dirtyFields", dirtyFields); // dirty shows when something has changed from its original state
+  // console.log("isDirty", isDirty);
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
     control,
@@ -210,7 +210,11 @@ export const YouTubeForm = () => {
         <button type="button" onClick={handleSetValue}>
           Set value
         </button>
-        <button>Submit</button>
+        {!isDirty || isValid ? (
+          <button>Submit</button>
+        ) : (
+          <></>
+        )}
       </form>
       <DevTool control={control} />
     </div>
