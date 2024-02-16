@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
@@ -43,6 +43,7 @@ export const YouTubeForm = () => {
     watch,
     getValues,
     setValue,
+    reset
   } = form;
   // getValues doesn't trigger re-renders or subscribe to input values when getting value data
   // setValue doesn't effect touched, dirty, validate state by default
@@ -90,6 +91,11 @@ export const YouTubeForm = () => {
     });
   };
 
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset()
+    }
+  }, [isSubmitSuccessful, reset])
   // const watchForm = watch(); adds a rerender
 
   renderCount++;
@@ -224,6 +230,9 @@ export const YouTubeForm = () => {
         <button type="button" onClick={handleSetValue}>
           Set value
         </button>
+        { isDirty ? <button type="button" onClick={() => reset()}>
+          Reset
+        </button> : <></> }
         {isDirty && isValid && !isSubmitting ? <button disabled={isSubmitting}>Submit</button> : <></>}
       </form>
       <DevTool control={control} />
