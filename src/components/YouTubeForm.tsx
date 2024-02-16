@@ -33,6 +33,7 @@ export const YouTubeForm = () => {
       age: 0,
       dob: new Date(),
     },
+    mode: "onBlur"
   });
 
   const {
@@ -59,7 +60,7 @@ export const YouTubeForm = () => {
     isSubmitSuccessful,
     submitCount,
   } = formState;
-  console.log("isSubmitting", isSubmitting)
+  // console.log("isSubmitting", isSubmitting)
   // console.log("isSubmitted", isSubmitted)
   // console.log("isSubmitSuccessful", isSubmitSuccessful)
   // console.log("submitCount", submitCount)
@@ -143,6 +144,11 @@ export const YouTubeForm = () => {
                     "This domain is not supported."
                   );
                 },
+                emailAvailable: async (fieldValue) => {
+                  const response = await fetch(`https://jsonplaceholder.typicode.com/users?email=${fieldValue}`)
+                  const data = await response.json()
+                  return data.length == 0 || "Email already exists";
+                }
               },
             })}
           />
