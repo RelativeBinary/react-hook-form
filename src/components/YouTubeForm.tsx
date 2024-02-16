@@ -58,7 +58,7 @@ export const YouTubeForm = () => {
     isSubmitSuccessful,
     submitCount,
   } = formState;
-  // console.log("isSubmitting", isSubmitting)
+  console.log("isSubmitting", isSubmitting)
   // console.log("isSubmitted", isSubmitted)
   // console.log("isSubmitSuccessful", isSubmitSuccessful)
   // console.log("submitCount", submitCount)
@@ -224,7 +224,7 @@ export const YouTubeForm = () => {
         <button type="button" onClick={handleSetValue}>
           Set value
         </button>
-        {isDirty && isValid ? <button>Submit</button> : <></>}
+        {isDirty && isValid && !isSubmitting ? <button disabled={isSubmitting}>Submit</button> : <></>}
       </form>
       <DevTool control={control} />
     </div>
