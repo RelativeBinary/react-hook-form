@@ -44,7 +44,8 @@ export const YouTubeForm = () => {
     watch,
     getValues,
     setValue,
-    reset
+    reset,
+    trigger
   } = form;
   // getValues doesn't trigger re-renders or subscribe to input values when getting value data
   // setValue doesn't effect touched, dirty, validate state by default
@@ -235,6 +236,12 @@ export const YouTubeForm = () => {
         </button>
         <button type="button" onClick={handleSetValue}>
           Set value
+        </button>
+        <button type="button" onClick={() => trigger()}>
+          Trigger validation
+        </button>
+        <button type="button" onClick={() => trigger("channel")}>
+          Trigger channel validation
         </button>
         { isDirty ? <button type="button" onClick={() => reset()}>
           Reset
